@@ -1,0 +1,71 @@
+@SecurityProject_HostAddress = http://localhost:5137
+
+GET {{SecurityProject_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### REGISTER USER
+POST {{SecurityProject_HostAddress}}/users/register 
+Content-Type: application/json 
+
+{
+    "firstName": "florence",
+    "lastName": "jules",
+    "password": "florence",
+    "email": "florence@gmail.com"
+}
+
+### 
+GET {{SecurityProject_HostAddress}}/users
+
+### GET USER DETAILS
+GET {{SecurityProject_HostAddress}}/users/9
+
+###
+GET {{SecurityProject_HostAddress}}/message
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzkwMzMxNDEzLCJpc3MiOiJkZXZlbG9wbWVudFByb2plY3QiLCJhdWQiOiJzdGFuZGFyZCJ9.Z9GUXPqzTanrUz8M4fXjdPSJHlGqYDIVhJZ6IdVANp0
+
+### LOGIN USER
+POST {{SecurityProject_HostAddress}}/users/login
+Content-Type: application/json 
+
+{
+    "email": "simon@gmail.com",
+    "password": "vincent0123"
+}
+
+### FETCH ALL POSTS
+GET {{SecurityProject_HostAddress}}/posts 
+Content-Type: application/json
+
+### CREATE POST
+POST {{SecurityProject_HostAddress}}/posts 
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzkwMzM1MzcyLCJpc3MiOiJkZXZlbG9wbWVudFByb2plY3QiLCJhdWQiOiJzdGFuZGFyZCJ9.QP1utTcREBhyfkt_jnjyNPnhGGZeywQ0LY7YwB-h570
+
+{
+    "title": "another post",
+    "excerpt": "come read more here",
+    "body": "welcome to our blog fellas"
+}
+
+### UPDATE POST
+PUT {{SecurityProject_HostAddress}}/posts/7
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDMzODQ5NSwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.B4h9SkOxGR4K79wQS7i4X5aaIifPk_ZZvY4ENy6oZXY
+
+{
+    "title": "UPDATED POST",
+    "excerpt": "MAD A MISTAKE",
+    "body": "welcome to our blog fellas"
+}
+### GET ALL POSTS
+GET {{SecurityProject_HostAddress}}/posts
+
+### GET ONE POST
+GET {{SecurityProject_HostAddress}}/posts/7
+
+### DELETE POST
+DELETE {{SecurityProject_HostAddress}}/posts/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDMzODQ5NSwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.B4h9SkOxGR4K79wQS7i4X5aaIifPk_ZZvY4ENy6oZXY
+###
+GET {{SecurityProject_HostAddress}}/posts/delete/all

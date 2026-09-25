@@ -1,0 +1,12 @@
+bin/
+obj/
+
+*http
+
+Dockerfile*
+
+compose.yml
+
+.env
+
+text.txt
