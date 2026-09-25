@@ -98,9 +98,9 @@ public class PostService : IPostService
 
         var cmd = new NpgsqlCommand(query, conn);
         cmd.Parameters.AddWithValue("id", post.Id);
-        cmd.Parameters.AddWithValue("title", data.Title);
-        cmd.Parameters.AddWithValue("excerpt", data.Excerpt);
-        cmd.Parameters.AddWithValue("body", data.Body);
+        cmd.Parameters.AddWithValue("title", InputSanitizer.Sanitize(data.Title));
+        cmd.Parameters.AddWithValue("excerpt",InputSanitizer.Sanitize(data.Excerpt));
+        cmd.Parameters.AddWithValue("body",InputSanitizer.Sanitize(data.Body));
 
         using var reader = await cmd.ExecuteReaderAsync();
         

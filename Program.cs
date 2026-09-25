@@ -53,8 +53,8 @@ app.UseAuthorization();
 //  this ensure that only the author can update and delete his/her posts
 app.UseWhen(context => 
 context.Request.Path.StartsWithSegments("/posts") && 
-context.Request.Method == "PUT" ||
-context.Request.Method == "DELETE", app =>
+(context.Request.Method == "PUT" ||
+context.Request.Method == "DELETE"), app =>
 {
     app.UseCheckAuthorOwnership();
 });
@@ -82,7 +82,7 @@ app.MapPost("/users/login", async (
     {
         var user = await userService.FindByEmail(Email);
         if(user == null)
-            return Results.BadRequest();
+            return Results.BadRequest(new {error = "authentication failed"});
 
         if(!BC.Verify(Password, user.Password))
             return Results.BadRequest(new {error = "authentication failed"});
