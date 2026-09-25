@@ -1,5 +1,5 @@
 # Project Overview
-> **Note** When it comes to testing, I primarily tested my API using the .http file to make HTTP requests. I decided to take the integration testing approach, as it reflect more closely how the API will behave in project, Please check SecurityProject.http file
+> **Note** When it comes to testing, I primarily tested my API using the .http file to make HTTP requests. I decided to take the integration testing approach, as it reflect more closely how the API will behave in production, Please check SecurityProject.http file
 ---
 
 This document summarizes the security controls implemented in this project, for quick review by developers and auditors. It covers **XSS**, **SQL Injection**, **Authentication**, and **Authorization**.
