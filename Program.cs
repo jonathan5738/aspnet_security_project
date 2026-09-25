@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Npgsql;
 using SecurityProject.Dtos;
 using SecurityProject.Middlewares;
 using SecurityProject.Services;
