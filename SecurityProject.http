@@ -1,21 +1,21 @@
 @SecurityProject_HostAddress = http://localhost:5137
 
-GET {{SecurityProject_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ### REGISTER USER
 POST {{SecurityProject_HostAddress}}/users/register 
 Content-Type: application/json 
 
 {
-    "firstName": "florence",
-    "lastName": "jules",
-    "password": "florence",
-    "email": "florence@gmail.com"
+    "firstName": "jonathan",
+    "lastName": "junior",
+    "password": "jonathan",
+    "email": "jonathan@gmail.com"
 }
 
 ### 
 GET {{SecurityProject_HostAddress}}/users
+
+### DELETE ALL USERS
+GET {{SecurityProject_HostAddress}}/users/all
 
 ### GET USER DETAILS
 GET {{SecurityProject_HostAddress}}/users/9
@@ -29,9 +29,13 @@ POST {{SecurityProject_HostAddress}}/users/login
 Content-Type: application/json 
 
 {
-    "email": "simon@gmail.com",
-    "password": "vincent0123"
+    "email": "jonathan@gmail.com",
+    "password": "jonathan"
 }
+### USER PROFILE
+GET {{SecurityProject_HostAddress}}/users/profile
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDM5ODQwNCwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.xAlZz3jIFOhFRV_tUQEUuf3v6nAuPE3eT52J5BNSUtw
 
 ### FETCH ALL POSTS
 GET {{SecurityProject_HostAddress}}/posts 
@@ -40,24 +44,27 @@ Content-Type: application/json
 ### CREATE POST
 POST {{SecurityProject_HostAddress}}/posts 
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzkwMzM1MzcyLCJpc3MiOiJkZXZlbG9wbWVudFByb2plY3QiLCJhdWQiOiJzdGFuZGFyZCJ9.QP1utTcREBhyfkt_jnjyNPnhGGZeywQ0LY7YwB-h570
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDM5NzMzOCwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.TmqKE6FiuhBMxAEAQcSplujBk7ZDIq2PK506ZFX0Knw
 
 {
-    "title": "another post",
-    "excerpt": "come read more here",
-    "body": "welcome to our blog fellas"
+    "title": "a book written by martin",
+    "excerpt": "for the world to see",
+    "body": "i don't know"
 }
 
 ### UPDATE POST
-PUT {{SecurityProject_HostAddress}}/posts/7
+PUT {{SecurityProject_HostAddress}}/posts/9
 Content-Type: application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDMzODQ5NSwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.B4h9SkOxGR4K79wQS7i4X5aaIifPk_ZZvY4ENy6oZXY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDM5NzUwMCwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.lc9pbcYC_6vAQpsKTAFEpQ9vFvhrI-gBnUqFK5cr65I
 
 {
-    "title": "UPDATED POST",
+    "title": "UPDATED POST 2",
     "excerpt": "MAD A MISTAKE",
     "body": "welcome to our blog fellas"
 }
+### DELETE POST
+DELETE {{SecurityProject_HostAddress}}/posts/9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc5MDM5NzU4OCwiaXNzIjoiZGV2ZWxvcG1lbnRQcm9qZWN0IiwiYXVkIjoic3RhbmRhcmQifQ.l-ticiR2x3QfDrDF9iUHjObz1c0gdYJEO2zbS1LdY_4 
 ### GET ALL POSTS
 GET {{SecurityProject_HostAddress}}/posts
 

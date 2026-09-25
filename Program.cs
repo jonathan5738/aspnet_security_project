@@ -2,13 +2,18 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using SecurityProject.Dtos;
+using SecurityProject.Middlewares;
 using SecurityProject.Services;
 using SecurityProject.Utils;
 using BC = BCrypt.Net.BCrypt;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["ConnectionString:DbConnect"];
+
+// AddValidation() enable automatic validation of inputs 
+// having validation attributes
 builder.Services.AddValidation();
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -46,57 +51,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//  this ensure that only the author can update and delete his/her posts
 app.UseWhen(context => 
 context.Request.Path.StartsWithSegments("/posts") && 
 context.Request.Method == "PUT" ||
 context.Request.Method == "DELETE", app =>
 {
-    app.Use(async (context, next) =>
-    {
-        var postService = context.RequestServices.GetRequiredService<IPostService>();
-        var routeValue = context.GetRouteValue("id");
-        if (routeValue == null)
-        {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("invalid request");
-            return;
-        }
-        if(!int.TryParse(routeValue.ToString(), out int id))
-        {
-            
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("invalid request");
-            return;
-        }
-        var foundPost = await postService.FindPostById(id);
-        if(foundPost == null)
-        {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("invalid request");
-            return;
-        }
-        var sub = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (sub == null)
-        {
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync("unauthorized");
-            return;
-        } 
-        if(!int.TryParse(sub, out int userId))
-        {
-            context.Response.StatusCode = 401;
-            await context.Response.WriteAsync("unauthorized");
-            return;  
-        }
-
-        if(foundPost.AuthorId != userId)
-        {
-            context.Response.StatusCode = 403;
-            await context.Response.WriteAsync("Forbidden");
-            return;
-        }
-        await next.Invoke(context);
-    });
+    app.UseCheckAuthorOwnership();
 });
 
 app.MapPost("/users/register", async (IConfiguration config,
@@ -113,25 +74,6 @@ app.MapPost("/users/register", async (IConfiguration config,
     } 
 });
 
-app.MapGet("/users/{id}", async (int id, 
-IUserService userService, IEncryptionService encryptionService) =>
-{
-    try
-    {
-        var foundUser = await userService.FindById(id);
-        if(foundUser == null) return Results.NotFound();
-        return Results.Ok(new
-        {
-            FirstName = encryptionService.Decrypt(foundUser.FirstName),
-            LastName = encryptionService.Decrypt(foundUser.LastName),
-            Email = encryptionService.Decrypt(foundUser.Email)
-        });
-    } catch(Exception ex)
-    {
-        System.Console.WriteLine(ex);
-        return Results.BadRequest();
-    }
-});
 app.MapPost("/users/login", async (
     IConfiguration config, 
     IUserService userService, [FromBody] LoginDTO data) =>
@@ -154,6 +96,27 @@ app.MapPost("/users/login", async (
         return Results.BadRequest(new {error = "something went wrong."});
     }
 });
+
+app.MapGet("/users/profile", async (HttpContext context,
+ IUserService userService, IEncryptionService encryptionService) =>
+{
+    var idValue = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if(!int.TryParse(idValue, out int userId))
+    {
+        return Results.Forbid();
+    }
+    var user = await userService.FindById(userId);
+    if(user == null)
+        return Results.Forbid();
+
+    return Results.Ok(new
+    {
+        Id = user.Id,
+        FirstName = encryptionService.Decrypt(user.FirstName),
+        Email = encryptionService.Decrypt(user.Email),
+        LastName = encryptionService.Decrypt(user.LastName)
+    });
+}).RequireAuthorization("UserPolicy");
 
 app.MapGet("/posts", async(IPostService postService) =>
 {
@@ -225,12 +188,7 @@ app.MapDelete("/posts/{id}", async(int id, IPostService postService) =>
 {
     await postService.DeletePost(id);
     return Results.Ok(new {message = "post successfully deleted."});
-});
+}).RequireAuthorization("UserPolicy");
 
-app.MapGet("/users", async (IUserService userService) =>
-{
-    var users = await userService.FindAll();
-    return Results.Ok(users);
-});
 app.Run();
 

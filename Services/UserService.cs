@@ -70,6 +70,7 @@ public class UserService : IUserService
 
     public async Task<User?> FindByEmail(string email)
     {
+        email = encryptionService.Encrypt(email);
         using var conn = new NpgsqlConnection(connectionString);
         var query = @"SELECT * FROM users WHERE email=@email";
         await conn.OpenAsync();
